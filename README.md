@@ -1,141 +1,186 @@
-# 🚀 Welcome to Z.ai Code Scaffold
+# Hack2Hire
 
-A modern, production-ready web application scaffold powered by cutting-edge technologies, designed to accelerate your development with [Z.ai](https://chat.z.ai)'s AI-powered coding assistance.
+AI-powered interview platform that simulates realistic job interviews with adaptive difficulty and real-time feedback.
 
-## ✨ Technology Stack
+## Problem Statement
 
-This scaffold provides a robust foundation built with:
+Traditional interview preparation lacks realistic practice environments. Candidates need an interactive platform that provides:
+- Dynamic question generation based on job requirements
+- Real-time AI evaluation of answers
+- Adaptive difficulty adjustment based on performance
+- Comprehensive performance analytics and feedback
 
-### 🎯 Core Framework
-- **⚡ Next.js 16** - The React framework for production with App Router
-- **📘 TypeScript 5** - Type-safe JavaScript for better developer experience
-- **🎨 Tailwind CSS 4** - Utility-first CSS framework for rapid UI development
+## Solution Overview
 
-### 🧩 UI Components & Styling
-- **🧩 shadcn/ui** - High-quality, accessible components built on Radix UI
-- **🎯 Lucide React** - Beautiful & consistent icon library
-- **🌈 Framer Motion** - Production-ready motion library for React
-- **🎨 Next Themes** - Perfect dark mode in 2 lines of code
+Hack2Hire is a full-stack AI interview platform that:
+- Extracts skills and experience from uploaded resumes
+- Parses job descriptions to identify requirements
+- Generates contextual interview questions using AI
+- Evaluates responses in real-time with detailed feedback
+- Adjusts question difficulty based on candidate performance
+- Provides comprehensive performance reports with actionable insights
 
-### 📋 Forms & Validation
-- **🎣 React Hook Form** - Performant forms with easy validation
-- **✅ Zod** - TypeScript-first schema validation
+The system uses LLM-powered question generation and evaluation to create a personalized interview experience that adapts to each candidate's skill level.
 
-### 🔄 State Management & Data Fetching
-- **🐻 Zustand** - Simple, scalable state management
-- **🔄 TanStack Query** - Powerful data synchronization for React
-- **🌐 Fetch** - Promise-based HTTP request
+## Tech Stack
 
-### 🗄️ Database & Backend
-- **🗄️ Prisma** - Next-generation TypeScript ORM
-- **🔐 NextAuth.js** - Complete open-source authentication solution
+### Frontend
+- Next.js 16.1.3 with App Router
+- React 19 with TypeScript 5.9.3
+- Tailwind CSS 4 for styling
+- shadcn/ui component library
+- Framer Motion for animations
+- Zustand for state management
 
-### 🎨 Advanced UI Features
-- **📊 TanStack Table** - Headless UI for building tables and datagrids
-- **🖱️ DND Kit** - Modern drag and drop toolkit for React
-- **📊 Recharts** - Redefined chart library built with React and D3
-- **🖼️ Sharp** - High performance image processing
+### Backend
+- Next.js API Routes (server actions)
+- Prisma ORM with SQLite database
+- z-ai-web-dev-sdk for AI integration
 
-### 🌍 Internationalization & Utilities
-- **🌍 Next Intl** - Internationalization library for Next.js
-- **📅 Date-fns** - Modern JavaScript date utility library
-- **🪝 ReactUse** - Collection of essential React hooks for modern development
+### AI / APIs
+- LLM for question generation and answer evaluation
+- Chat completions API for interview flow
 
-## 🎯 Why This Scaffold?
+### Database
+- SQLite with Prisma ORM
+- User, Resume, JobDescription, InterviewSession, Question, Answer, FinalReport models
 
-- **🏎️ Fast Development** - Pre-configured tooling and best practices
-- **🎨 Beautiful UI** - Complete shadcn/ui component library with advanced interactions
-- **🔒 Type Safety** - Full TypeScript configuration with Zod validation
-- **📱 Responsive** - Mobile-first design principles with smooth animations
-- **🗄️ Database Ready** - Prisma ORM configured for rapid backend development
-- **🔐 Auth Included** - NextAuth.js for secure authentication flows
-- **📊 Data Visualization** - Charts, tables, and drag-and-drop functionality
-- **🌍 i18n Ready** - Multi-language support with Next Intl
-- **🚀 Production Ready** - Optimized build and deployment settings
-- **🤖 AI-Friendly** - Structured codebase perfect for AI assistance
+### Hosting / Deployment
+- Vercel for production deployment
+- Node.js runtime
 
-## 🚀 Quick Start
+## Core Features
 
-```bash
-# Install dependencies
-bun install
+- Multi-step onboarding with resume and job description upload
+- AI-powered resume parsing and skill extraction
+- Job description parsing with requirements identification
+- Adaptive question generation across multiple categories
+- Real-time answer evaluation with scoring
+- Dynamic difficulty adjustment based on performance
+- Comprehensive performance reports with skill breakdowns
+- Fit score calculation between candidate and job requirements
+- Session-based interview flow with question navigation
+- Time tracking per question with auto-submission
+- Interview statistics and performance trends
 
-# Start development server
-bun run dev
-
-# Build for production
-bun run build
-
-# Start production server
-bun start
-```
-
-Open [http://localhost:3000](http://localhost:3000) to see your application running.
-
-## 🤖 Powered by Z.ai
-
-This scaffold is optimized for use with [Z.ai](https://chat.z.ai) - your AI assistant for:
-
-- **💻 Code Generation** - Generate components, pages, and features instantly
-- **🎨 UI Development** - Create beautiful interfaces with AI assistance  
-- **🔧 Bug Fixing** - Identify and resolve issues with intelligent suggestions
-- **📝 Documentation** - Auto-generate comprehensive documentation
-- **🚀 Optimization** - Performance improvements and best practices
-
-Ready to build something amazing? Start chatting with Z.ai at [chat.z.ai](https://chat.z.ai) and experience the future of AI-powered development!
-
-## 📁 Project Structure
+## Project Structure
 
 ```
 src/
-├── app/                 # Next.js App Router pages
-├── components/          # Reusable React components
-│   └── ui/             # shadcn/ui components
-├── hooks/              # Custom React hooks
-└── lib/                # Utility functions and configurations
+├── app/
+│   ├── api/               # API routes
+│   │   ├── interview/      # Interview management
+│   │   ├── upload-resume/ # Resume processing
+│   │   └── upload-jd/      # Job description processing
+│   ├── interview/          # Interview interface
+│   ├── onboarding/        # User setup flow
+│   └── results/            # Performance reports
+├── components/
+│   ├── interview/          # Interview components
+│   └── ui/               # shadcn/ui components
+├── lib/
+│   ├── services/          # Business logic
+│   │   ├── interview.service.ts
+│   │   └── llm.service.ts
+│   └── types/             # TypeScript definitions
+├── store/                # Zustand state management
+└── hooks/                # React hooks
+
+prisma/
+├── schema.prisma        # Database schema
+└── migrations/           # Database migrations
 ```
 
-## 🎨 Available Features & Components
+## Environment Variables
 
-This scaffold includes a comprehensive set of modern web development tools:
+Required environment variables:
 
-### 🧩 UI Components (shadcn/ui)
-- **Layout**: Card, Separator, Aspect Ratio, Resizable Panels
-- **Forms**: Input, Textarea, Select, Checkbox, Radio Group, Switch
-- **Feedback**: Alert, Toast (Sonner), Progress, Skeleton
-- **Navigation**: Breadcrumb, Menubar, Navigation Menu, Pagination
-- **Overlay**: Dialog, Sheet, Popover, Tooltip, Hover Card
-- **Data Display**: Badge, Avatar, Calendar
+```
+DATABASE_URL=file:./db/custom.db
+NODE_ENV=development
+```
 
-### 📊 Advanced Data Features
-- **Tables**: Powerful data tables with sorting, filtering, pagination (TanStack Table)
-- **Charts**: Beautiful visualizations with Recharts
-- **Forms**: Type-safe forms with React Hook Form + Zod validation
+For production with Vercel, configure these in project settings.
 
-### 🎨 Interactive Features
-- **Animations**: Smooth micro-interactions with Framer Motion
-- **Drag & Drop**: Modern drag-and-drop functionality with DND Kit
-- **Theme Switching**: Built-in dark/light mode support
+## Local Development Setup
 
-### 🔐 Backend Integration
-- **Authentication**: Ready-to-use auth flows with NextAuth.js
-- **Database**: Type-safe database operations with Prisma
-- **API Client**: HTTP requests with Fetch + TanStack Query
-- **State Management**: Simple and scalable with Zustand
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/kaustubhbbx/hack2hire.git
+   cd hack2hire
+   ```
 
-### 🌍 Production Features
-- **Internationalization**: Multi-language support with Next Intl
-- **Image Optimization**: Automatic image processing with Sharp
-- **Type Safety**: End-to-end TypeScript with Zod validation
-- **Essential Hooks**: 100+ useful React hooks with ReactUse for common patterns
+2. Install dependencies:
+   ```bash
+   bun install
+   ```
 
-## 🤝 Get Started with Z.ai
+3. Set environment variables:
+   ```bash
+   cp .env.example .env
+   # Edit .env with your values
+   ```
 
-1. **Clone this scaffold** to jumpstart your project
-2. **Visit [chat.z.ai](https://chat.z.ai)** to access your AI coding assistant
-3. **Start building** with intelligent code generation and assistance
-4. **Deploy with confidence** using the production-ready setup
+4. Initialize database:
+   ```bash
+   bun run db:push
+   ```
 
----
+5. Start development server:
+   ```bash
+   bun run dev
+   ```
 
-Built with ❤️ for the developer community. Supercharged by [Z.ai](https://chat.z.ai) 🚀
+The application will be available at http://localhost:3000
+
+## Deployment on Vercel
+
+### Step 1: Create Vercel Account
+1. Go to https://vercel.com and sign in
+2. Connect your GitHub account
+
+### Step 2: Import Repository
+1. Click "Add New Project"
+2. Select "Continue with GitHub"
+3. Choose `kaustubhbbx/hack2hire` repository
+
+### Step 3: Configure Project
+1. Framework Preset: Next.js
+2. Root Directory: `./` (leave as default)
+3. Build Command: `bun run build`
+4. Install Command: `bun install`
+5. Output Directory: `.next`
+
+### Step 4: Environment Variables
+Add the following environment variables in Vercel project settings:
+```
+DATABASE_URL=postgresql://your-db-url
+NODE_ENV=production
+```
+
+### Step 5: Deploy
+1. Click "Deploy" button
+2. Vercel will build and deploy your application
+
+### Step 6: Verify Deployment
+1. Wait for deployment to complete
+2. Access your application at the provided Vercel URL
+3. Check Vercel dashboard for logs if deployment fails
+
+**Automatic Redeploy**: When you push to GitHub, Vercel automatically detects changes and redeploys your application.
+
+**Checking Logs**: If deployment fails, go to Vercel Dashboard → Your Project → Logs to see error messages.
+
+## Future Improvements
+
+- Video response recording capability
+- Voice-to-text transcription for video interviews
+- Expanded question bank with industry-specific questions
+- Multi-language support for international candidates
+- Integration with LinkedIn for automated profile import
+- Advanced analytics dashboard with performance trends
+- Practice mode with timer and hints
+
+## Team
+
+- Kaustubh Shende – DevOps + Full-Stack Development
