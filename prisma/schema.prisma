@@ -1,0 +1,161 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// AI-Powered Mock Interview Platform Schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// User model for authentication and session management
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  resumes           Resume[]
+  jobDescriptions   JobDescription[]
+  interviewSessions InterviewSession[]
+}
+
+// Resume model to store parsed resume data
+model Resume {
+  id        String   @id @default(cuid())
+  userId    String
+  fileName  String
+  parsedData String  // JSON string containing parsed resume data
+  skills    String   // JSON array of skills
+  experience String  // JSON array of experience entries
+  projects  String   // JSON array of projects
+  education String   // JSON array of education entries
+  certifications String // JSON array of certifications
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  user              User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  interviewSessions InterviewSession[]
+
+  @@index([userId])
+}
+
+// JobDescription model to store parsed JD data
+model JobDescription {
+  id               String   @id @default(cuid())
+  userId           String
+  title            String
+  requirements     String   // JSON array of requirements
+  skillsRequired   String   // JSON array of required skills
+  experienceLevel  String   // Entry/Mid/Senior/Lead
+  responsibilities String   // JSON array of responsibilities
+  keyCompetencies  String   // JSON array of competencies
+  initialFitScore  Int?     // Initial fit score (0-100) when matched with resume
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  // Relations
+  user              User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  interviewSessions InterviewSession[]
+
+  @@index([userId])
+}
+
+// InterviewSession model to track interview state
+model InterviewSession {
+  id                String   @id @default(cuid())
+  userId            String
+  resumeId          String
+  jobDescriptionId  String
+  status            String   // NotStarted, InProgress, Completed, Terminated
+  currentDifficulty String   // Easy, Medium, Hard
+  startTime         DateTime @default(now())
+  endTime           DateTime?
+  totalDuration     Int?     // Total interview duration in seconds
+  currentQuestionNumber Int  @default(0)
+  earlyTerminationReason String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  // Relations
+  user         User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  resume       Resume           @relation(fields: [resumeId], references: [id], onDelete: Cascade)
+  jobDescription JobDescription  @relation(fields: [jobDescriptionId], references: [id], onDelete: Cascade)
+  questions    Question[]
+  finalReport  FinalReport?
+
+  @@index([userId])
+  @@index([status])
+}
+
+// Question model to store interview questions
+model Question {
+  id               String   @id @default(cuid())
+  sessionId        String
+  text             String
+  category         String   // Technical, Conceptual, Behavioral, Scenario
+  difficulty       String   // Easy, Medium, Hard
+  timeLimit        Int      // Time limit in seconds
+  askedAt          DateTime @default(now())
+
+  // Relations
+  session InterviewSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  answer  Answer?
+
+  @@index([sessionId])
+}
+
+// Answer model to store candidate responses and evaluations
+model Answer {
+  id                   String   @id @default(cuid())
+  questionId           String   @unique
+  responseText         String
+  timeTaken            Int      // Time taken in seconds
+  score                Float    // Overall score (0-100)
+  accuracyScore        Float    // 30% weight
+  clarityScore         Float    // 20% weight
+  depthScore           Float    // 25% weight
+  relevanceScore       Float    // 15% weight
+  timeEfficiencyScore  Float    // 10% weight
+  timePenalty          Float    // Penalty for overtime
+  evaluationBreakdown  String   // JSON string with detailed evaluation
+  feedback             String   // Specific feedback on the answer
+  submittedAt          DateTime @default(now())
+
+  // Relations
+  question Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+
+  @@index([questionId])
+}
+
+// FinalReport model to store comprehensive interview analysis
+model FinalReport {
+  id                  String   @id @default(cuid())
+  sessionId           String   @unique
+  overallScore        Float    // Overall readiness score (0-100)
+  technicalScore      Float    // Technical skills score
+  behavioralScore     Float    // Behavioral skills score
+  conceptualScore     Float    // Conceptual understanding score
+  communicationScore  Float    // Communication skills score
+  timeManagementScore Float    // Time management score
+  performanceTrend    String   // Improving, Declining, Stable
+  strengths           String   // JSON array of top 3 strengths
+  weaknesses          String   // JSON array of bottom 3 weaknesses with feedback
+  recommendation      String   // Ready, Needs Practice, Not Ready
+  recommendationConfidence Float // Confidence percentage
+  questionCount       Int      // Number of questions answered
+  averageTimePerQuestion Int   // Average time in seconds
+  generatedAt         DateTime @default(now())
+
+  // Relations
+  session InterviewSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+
+  @@index([sessionId])
+}
