@@ -1,3 +1,7 @@
+
+
+https://github.com/user-attachments/assets/642ba235-65f0-4fd2-b13c-bbab7f328b99
+
 # Hack2Hire
 
 AI-powered interview platform that simulates realistic job interviews with adaptive difficulty and real-time feedback.
